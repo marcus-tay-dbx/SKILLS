@@ -1,0 +1,325 @@
+<!-- @dsCard group="Slides" -->
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;}
+  body{width:1280px;height:720px;position:relative;overflow:hidden;}
+  section{font-family:var(--font-sans);color:var(--db-ink);background:var(--db-oat-light);position:absolute;inset:0;}
+
+  html,body{margin:0;background:#0e1a1f;}
+  deck-stage:not(:defined){visibility:hidden}
+  /* ---- slide base ---- */
+  section{
+    font-family:var(--font-sans);
+    color:var(--db-ink);
+    background:var(--db-oat-light);
+    overflow:hidden;
+  }
+  .slide{position:absolute;inset:0;padding:72px 88px;display:flex;flex-direction:column;}
+  .slide.dark{background:var(--db-navy);color:#F4F1ED;}
+  .slide.white{background:#fff;}
+  .slide.coral{background:var(--db-coral);color:#fff;}
+  .eyebrow{font-size:14px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--db-lava);}
+  .dark .eyebrow,.coral .eyebrow{color:#FFC9BF;}
+  .title{font-size:56px;font-weight:700;line-height:1.04;letter-spacing:-.02em;color:var(--db-navy);}
+  .dark .title,.coral .title{color:#fff;}
+  .subtitle{font-size:22px;font-weight:400;line-height:1.4;color:var(--db-ink-soft);}
+  .dark .subtitle{color:#B9C6CB;}
+  .body{font-size:18px;line-height:1.6;color:var(--db-ink);}
+  .footer{position:absolute;left:88px;right:88px;bottom:40px;display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--db-ink-muted);}
+  .dark .footer{color:#7E9098;}
+  .accent-bar{width:64px;height:6px;background:var(--db-lava);border-radius:3px;}
+  ul.bullets{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;}
+  ul.bullets li{position:relative;padding-left:26px;font-size:18px;line-height:1.45;color:var(--db-ink);}
+  ul.bullets li::before{content:"";position:absolute;left:0;top:9px;width:9px;height:9px;border-radius:2px;background:var(--db-coral);}
+  .dark ul.bullets li{color:#D9E1E4;}
+  .card{background:#fff;border-radius:14px;box-shadow:var(--shadow-md);padding:30px;display:flex;flex-direction:column;gap:12px;}
+  .card img.pico{width:56px;height:56px;}
+  .card .ct{font-size:24px;font-weight:700;color:var(--db-navy);}
+  .card .cb{font-size:16px;line-height:1.5;color:var(--db-ink-soft);}
+  .stat{display:flex;flex-direction:column;gap:6px;}
+  .stat .num{font-size:88px;font-weight:700;letter-spacing:-.03em;color:var(--db-lava);line-height:1;}
+  .stat .lab{font-size:18px;color:#B9C6CB;max-width:280px;line-height:1.4;}
+  /* ---- data viz ---- */
+  .dv-legend{display:flex;gap:22px;align-items:center;flex-wrap:wrap;}
+  .dv-legend .li{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:500;color:var(--db-ink-soft);}
+  .dv-legend .sw{width:14px;height:14px;border-radius:3px;}
+  .dv-table{border-collapse:collapse;width:100%;font-family:var(--font-sans);}
+  .dv-table th{background:var(--db-coral);color:#fff;font-weight:700;text-align:left;padding:13px 18px;font-size:15px;letter-spacing:.01em;}
+  .dv-table th:first-child{border-top-left-radius:8px;}
+  .dv-table th:last-child{border-top-right-radius:8px;}
+  .dv-table td{padding:13px 18px;font-size:16px;color:var(--db-ink);}
+  .dv-table tbody tr:nth-child(odd){background:#fff;}
+  .dv-table tbody tr:nth-child(even){background:#F3F3F3;}
+  .dv-table .num{font-family:var(--font-mono);text-align:right;font-variant-numeric:tabular-nums;}
+  .dv-table tbody tr td:first-child{font-weight:600;color:var(--db-navy);}
+  .kpi{background:#fff;border-radius:12px;box-shadow:var(--shadow-sm);border:1px solid var(--db-line);padding:22px 24px;display:flex;flex-direction:column;gap:6px;}
+  .kpi .k-lab{font-size:14px;font-weight:600;color:var(--db-ink-muted);letter-spacing:.02em;}
+  .kpi .k-num{font-size:48px;font-weight:700;letter-spacing:-.02em;color:var(--db-navy);line-height:1;}
+  .kpi .k-delta{font-size:14px;font-weight:600;display:flex;align-items:center;gap:5px;}
+  .kpi .k-delta.up{color:var(--db-green-700);}
+  .kpi .k-delta.down{color:var(--db-maroon);}
+  .gantt-row{display:grid;grid-template-columns:200px 1fr;align-items:center;gap:0;height:52px;}
+  .gantt-row .g-lab{font-size:16px;font-weight:600;color:var(--db-navy);}
+  .gantt-track{position:relative;height:100%;border-left:1px solid var(--db-line);}
+  .gantt-bar{position:absolute;top:50%;transform:translateY(-50%);height:22px;border-radius:6px;display:flex;align-items:center;padding:0 12px;font-size:13px;font-weight:600;color:#fff;white-space:nowrap;}
+  .gantt-head{display:grid;grid-template-columns:200px 1fr;}
+  .gantt-cols{display:grid;grid-template-columns:repeat(4,1fr);}
+  .gantt-cols span{font-size:14px;font-weight:700;color:var(--db-ink-muted);letter-spacing:.06em;padding:0 0 10px 12px;border-left:1px solid var(--db-line);}
+  /* ---- executive events ---- */
+  .slide.event{background:var(--db-ink-deep);color:#F4F1ED;background-size:cover;background-position:center;}
+  .event-title{font-size:64px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;line-height:1.1;color:#fff;}
+  .event-title .accent{color:var(--db-lava);}
+  .event-kicker{font-size:18px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:#9FB0B6;}
+  .event-meta{font-size:17px;color:#9FB0B6;letter-spacing:.04em;}
+  /* horizontal milestone timeline (style one) */
+  .tl1{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;margin-top:60px;position:relative;}
+  .tl1::before{content:"";position:absolute;left:0;right:0;top:13px;height:2px;background:var(--db-line);}
+  .tl1 .node{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding-right:28px;position:relative;}
+  .tl1 .dot{width:28px;height:28px;border-radius:50%;background:var(--db-coral);border:5px solid var(--db-oat-light);box-shadow:0 0 0 1px var(--db-line);z-index:1;}
+  .tl1 .node:nth-child(2) .dot{background:var(--db-lava);}
+  .tl1 .node:nth-child(3) .dot{background:var(--db-navy7,#1B5162);}
+  .tl1 .node:nth-child(4) .dot{background:var(--db-green);}
+  .tl1 .date{font-family:var(--font-mono);font-size:14px;color:var(--db-lava);font-weight:500;}
+  .tl1 .h{font-size:20px;font-weight:700;color:var(--db-navy);}
+  .tl1 .d{font-size:15px;line-height:1.45;color:var(--db-ink-soft);}
+  /* vertical timeline (style two) */
+  .tl2{margin-top:36px;border-left:2px solid var(--db-line);display:flex;flex-direction:column;gap:26px;padding-left:0;}
+  .tl2 .row{position:relative;padding-left:34px;}
+  .tl2 .row::before{content:"";position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--db-coral);}
+  .tl2 .row .h{font-size:18px;font-weight:700;color:var(--db-navy);}
+  .tl2 .row .d{font-size:15px;color:var(--db-ink-soft);margin-top:2px;}
+  .tl2 .row .dt{font-family:var(--font-mono);font-size:13px;color:var(--db-ink-muted);}
+  /* ---- AI Days: industry & bold title ---- */
+  .slide.industry{background:#000;color:#fff;background-size:cover;background-position:center;justify-content:flex-end;}
+  .slide.industry .scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.78) 0%,rgba(0,0,0,.45) 38%,rgba(0,0,0,0) 62%);}
+  .slide.industry > *{position:relative;z-index:1;}
+  .industry-eyebrow{font-size:15px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--db-coral);}
+  .industry-title{font-size:60px;font-weight:700;line-height:1.04;letter-spacing:-.02em;color:#fff;max-width:680px;}
+  .industry-meta{font-size:16px;color:#C7CDCF;letter-spacing:.02em;}
+  .slide.lava{background:var(--db-lava);color:#fff;background-size:cover;background-position:center;}
+  .slide.lava .title{color:#fff;}
+  .slide.lava .eyebrow{color:#2B0D08;}
+  /* ---- strategy / consulting layer ---- */
+  /* action title: kicker + full-sentence takeaway headline */
+  .action-kicker{font-size:14px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--db-lava);}
+  .action-title{font-size:34px;font-weight:700;line-height:1.18;letter-spacing:-.015em;color:var(--db-navy);max-width:1040px;}
+  .action-title .em{color:var(--db-lava);}
+  .action-rule{height:3px;width:100%;background:var(--db-oat-medium);margin:20px 0 28px;position:relative;}
+  .action-rule::before{content:"";position:absolute;left:0;top:0;height:3px;width:88px;background:var(--db-lava);}
+  .source-line{position:absolute;left:88px;bottom:30px;font-size:12px;font-style:italic;color:var(--db-ink-muted);}
+  .fnote{font-size:11px;vertical-align:super;color:var(--db-lava);font-weight:700;font-style:normal;}
+  /* insight callout */
+  .insight{background:var(--db-navy);color:#F4F1ED;border-radius:12px;padding:24px 26px;display:flex;flex-direction:column;gap:10px;}
+  .insight .ih{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--db-coral);}
+  .insight .it{font-size:20px;font-weight:600;line-height:1.35;}
+  /* executive summary numbered list */
+  .exsum{display:flex;flex-direction:column;gap:0;margin-top:8px;}
+  .exsum .item{display:grid;grid-template-columns:56px 1fr;gap:22px;padding:20px 0;border-bottom:1px solid var(--db-line);align-items:start;}
+  .exsum .item:last-child{border-bottom:0;}
+  .exsum .n{font-family:var(--font-mono);font-size:24px;font-weight:500;color:var(--db-lava);line-height:1.2;}
+  .exsum .h{font-size:21px;font-weight:700;color:var(--db-navy);margin-bottom:3px;}
+  .exsum .d{font-size:16px;line-height:1.45;color:var(--db-ink-soft);}
+  /* 2x2 matrix */
+  .mtx{position:relative;width:100%;aspect-ratio:1.7;}
+  .mtx .quad{position:absolute;width:50%;height:50%;border:1px solid var(--db-line);padding:18px 20px;display:flex;flex-direction:column;gap:6px;}
+  .mtx .q1{left:50%;top:0;background:var(--db-oat-light);}
+  .mtx .q2{left:0;top:0;background:#fff;}
+  .mtx .q3{left:0;top:50%;background:#fff;}
+  .mtx .q4{left:50%;top:50%;background:var(--db-coral);}
+  .mtx .q4 *{color:#fff !important;}
+  .mtx .qh{font-size:16px;font-weight:700;color:var(--db-navy);}
+  .mtx .qd{font-size:13px;line-height:1.4;color:var(--db-ink-soft);}
+  .mtx .axis-x{margin-top:14px;text-align:center;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--db-ink-muted);}
+  .mtx .axis-y{position:absolute;top:50%;left:-30px;transform:rotate(-90deg) translateX(50%);transform-origin:left center;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--db-ink-muted);white-space:nowrap;}
+  .mtx .dot{width:14px;height:14px;border-radius:50%;background:var(--db-lava);position:absolute;box-shadow:0 0 0 4px rgba(255,54,33,.18);}
+  /* harvey-ball comparison table */
+  .hb-table{border-collapse:collapse;width:100%;font-family:var(--font-sans);}
+  .hb-table th{text-align:left;padding:14px 16px;font-size:15px;font-weight:700;color:var(--db-navy);border-bottom:2px solid var(--db-navy);}
+  .hb-table th.c{text-align:center;}
+  .hb-table th.hl{color:var(--db-lava);}
+  .hb-table td{padding:14px 16px;font-size:16px;color:var(--db-ink);border-bottom:1px solid var(--db-line);}
+  .hb-table td.c{text-align:center;}
+  .hb-table td:first-child{font-weight:600;color:var(--db-navy);}
+  .hb-table .col-hl{background:rgba(255,95,70,.07);}
+  .hb{display:inline-block;width:22px;height:22px;border-radius:50%;border:2px solid var(--db-navy);position:relative;vertical-align:middle;background:#fff;overflow:hidden;}
+  .hb::after{content:"";position:absolute;left:0;top:0;bottom:0;background:var(--db-navy);}
+  .hb.h0::after{width:0;}
+  .hb.h25::after{width:50%;height:50%;top:50%;}
+  .hb.h50::after{width:50%;}
+  .hb.h75::after{width:100%;}
+  .hb.h75::before{content:"";position:absolute;right:0;top:0;width:50%;height:50%;background:#fff;}
+  .hb.h100::after{width:100%;}
+  /* waterfall handled inline via SVG */
+  /* ---- reference architecture ---- */
+  /* swim-lane diagram: columns = stages, with header + node stack */
+  .arch{display:grid;gap:14px;margin-top:6px;}
+  .arch-lane{background:#fff;border:1px solid var(--db-line);border-radius:12px;padding:0 0 14px;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-sm);}
+  .arch-lane .lane-h{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--db-navy);padding:10px 14px;text-align:center;}
+  .arch-lane.accent .lane-h{background:var(--db-lava);}
+  .arch-lane .lane-body{display:flex;flex-direction:column;gap:10px;padding:14px 12px 0;flex:1;}
+  .arch-node{display:flex;align-items:center;gap:10px;background:var(--db-oat-light);border:1px solid var(--db-line);border-radius:8px;padding:9px 11px;}
+  .arch-node img{width:26px;height:26px;object-fit:contain;flex-shrink:0;}
+  .arch-node .nl{font-size:13px;font-weight:600;color:var(--db-navy);line-height:1.2;}
+  .arch-node.solid{background:var(--db-navy);border-color:var(--db-navy);}
+  .arch-node.solid .nl{color:#fff;}
+  .arch-flow{position:relative;}
+  .arch-flow::after{content:"\2192";position:absolute;right:-13px;top:50%;transform:translateY(-50%);color:var(--db-coral);font-size:20px;font-weight:700;z-index:2;}
+  /* medallion bronze/silver/gold */
+  .medallion{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:8px;align-items:stretch;}
+  .med{padding:26px 24px;display:flex;flex-direction:column;gap:12px;position:relative;}
+  .med .ring{width:46px;height:46px;border-radius:50%;border:4px solid;}
+  .med.bronze{background:#FBF1EA;} .med.bronze .ring{border-color:#B87333;background:#E7B98D;}
+  .med.silver{background:#F2F3F4;} .med.silver .ring{border-color:#9AA3AB;background:#D7DBDE;}
+  .med.gold{background:#FCF6E6;}   .med.gold .ring{border-color:#D9A400;background:#FFD75E;}
+  .med .mt{font-size:22px;font-weight:700;color:var(--db-navy);}
+  .med .mtag{font-family:var(--font-mono);font-size:12px;color:var(--db-ink-muted);letter-spacing:.04em;}
+  .med .md{font-size:14px;line-height:1.45;color:var(--db-ink-soft);}
+  .med:not(:last-child)::after{content:"\2192";position:absolute;right:-11px;top:34px;color:var(--db-coral);font-size:22px;font-weight:700;z-index:3;}
+  .med-frame{border:1px solid var(--db-line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow-sm);}
+  /* ---- detailed lakehouse reference architecture (refarch S16) ---- */
+  .lh{display:grid;grid-template-columns:188px 1fr 226px;gap:0;margin-top:4px;align-items:stretch;}
+  .lh-col{display:flex;flex-direction:column;}
+  .lh-colh{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--db-ink-muted);margin-bottom:10px;}
+  /* sources rail */
+  .lh-src{display:flex;flex-direction:column;gap:7px;}
+  .lh-chip{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--db-line);border-radius:7px;padding:7px 9px;font-size:12.5px;font-weight:600;color:var(--db-navy);}
+  .lh-chip img{width:18px;height:18px;object-fit:contain;flex-shrink:0;}
+  .lh-chip .dotmark{width:14px;height:14px;border-radius:3px;background:var(--db-coral);flex-shrink:0;}
+  /* center platform */
+  .lh-platform{background:var(--db-navy);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px;margin:0 18px;position:relative;}
+  .lh-platform::before,.lh-platform::after{content:"\2192";position:absolute;top:50%;transform:translateY(-50%);color:var(--db-coral);font-size:22px;font-weight:700;}
+  .lh-platform::before{left:-15px;} .lh-platform::after{right:-15px;}
+  .lh-brand{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:2px;}
+  .lh-brand img{height:18px;}
+  .lh-panel{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:9px;padding:11px 12px;}
+  .lh-panel .ph{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--db-coral);margin-bottom:9px;display:flex;align-items:center;gap:7px;}
+  .lh-panel .ph img{width:18px;height:18px;}
+  .lh-nodes{display:flex;gap:7px;}
+  .lh-node{flex:1;background:#fff;border-radius:6px;padding:8px 7px;font-size:11px;font-weight:600;color:var(--db-navy);text-align:center;line-height:1.15;display:flex;align-items:center;justify-content:center;min-height:42px;}
+  /* medallion flow within data-engineering panel */
+  .lh-flow{display:flex;align-items:center;gap:0;}
+  .lh-stage{flex:1;border-radius:6px;padding:9px 6px;text-align:center;color:#fff;}
+  .lh-stage .sl{font-size:12px;font-weight:700;}
+  .lh-stage .sz{font-size:10px;opacity:.8;font-weight:500;}
+  .lh-stage.bz{background:#B87333;} .lh-stage.sv{background:#8A929A;} .lh-stage.gd{background:#D9A400;}
+  .lh-etl{font-size:9.5px;font-weight:700;color:#fff;padding:0 6px;white-space:nowrap;text-align:center;position:relative;}
+  .lh-etl::after{content:"\2192";display:block;color:var(--db-coral);font-size:15px;}
+  /* serve panel */
+  .lh-serve{background:var(--db-oat-medium);border:1px solid var(--db-line);border-radius:11px;padding:13px;display:flex;flex-direction:column;gap:7px;}
+  .lh-serve .sh{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--db-navy);display:flex;align-items:center;gap:7px;margin-bottom:3px;}
+  .lh-serve .sh img{width:18px;height:18px;}
+  .lh-srow{background:#fff;border:1px solid var(--db-line);border-radius:6px;padding:8px 10px;font-size:12.5px;font-weight:600;color:var(--db-navy);}
+  /* ---- azure architecture diagrams (refarch S4 + S19) ---- */
+  .adia{--teal:#15846E;--abord:#CBD8D6;--achev:#B7C4C2;}
+  .ad-sect{font-size:16px;font-weight:700;color:var(--teal);text-align:center;line-height:1.1;}
+  .ad-card{border:1.5px solid var(--abord);border-radius:12px;background:#fff;padding:13px 14px;display:flex;flex-direction:column;gap:8px;}
+  .ad-cap{font-size:11.5px;color:var(--db-ink-soft);line-height:1.32;}
+  .ad-chev{display:flex;align-items:center;justify-content:center;color:var(--achev);font-size:30px;font-weight:300;width:18px;flex:none;}
+  .ad-chev.v{font-size:24px;}
+  .ad-navybar{background:var(--db-navy);color:#fff;font-size:12px;font-weight:700;letter-spacing:.08em;border-radius:5px;padding:7px 10px;text-align:center;}
+  .ad-slatebtn{background:#5B7886;color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.04em;border-radius:4px;padding:7px 6px;text-align:center;line-height:1.15;}
+  .ad-graybtn{background:#fff;border:1px solid var(--abord);color:var(--db-navy);font-size:11.5px;font-weight:600;border-radius:5px;padding:8px 6px;text-align:center;}
+  .ad-mlchip{display:flex;align-items:stretch;border:1px solid var(--abord);border-radius:5px;overflow:hidden;}
+  .ad-mlchip .ml{background:var(--db-navy);padding:0 7px;display:flex;align-items:center;}
+  .ad-mlchip .ml img{height:10px;display:block;filter:brightness(0) invert(1);}
+  .ad-mlchip .lb{font-size:10.5px;font-weight:700;color:var(--db-navy);padding:5px 7px;letter-spacing:.04em;display:flex;align-items:center;}
+  .ad-stage{flex:1;border:1px solid var(--abord);border-radius:6px;overflow:hidden;display:flex;flex-direction:column;}
+  .ad-stage .sh{display:flex;align-items:center;gap:5px;padding:5px 8px;color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.05em;}
+  .ad-stage.bz .sh{background:#B87333;} .ad-stage.sv .sh{background:#8A929A;} .ad-stage.gd .sh{background:#D9A400;}
+  .ad-stage .sb{padding:8px;font-size:11px;color:var(--db-ink-soft);line-height:1.3;flex:1;}
+  .ad-src{display:flex;align-items:center;gap:10px;}
+  .ad-srcico{width:38px;height:38px;flex:none;display:flex;align-items:center;justify-content:center;color:var(--db-navy);}
+  .ad-srcico svg{width:30px;height:30px;}
+  .ad-srclbl{font-size:11.5px;color:var(--db-ink);line-height:1.25;}
+  .ad-node{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;}
+  .ad-node .ni{width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:var(--db-navy);}
+  .ad-node .ni svg{width:34px;height:34px;} .ad-node .ni img{max-width:38px;max-height:38px;}
+  .ad-node .nt{font-size:11.5px;font-weight:600;color:var(--db-navy);line-height:1.2;}
+  .ad-darrow{flex:1;height:0;border-top:2px dashed var(--achev);position:relative;align-self:center;min-width:18px;}
+  .ad-darrow::after{content:"";position:absolute;right:-1px;top:-5px;border-left:7px solid var(--achev);border-top:4px solid transparent;border-bottom:4px solid transparent;}
+
+</style></head>
+<body>
+<section><div class="slide white adia" style="padding:40px 52px;justify-content:center;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <img src="../assets/brand/databricks-logo-full-color.svg" alt="Databricks" style="height:24px;">
+        <div class="action-title" style="font-size:27px;">Azure Databricks Lakehouse Architecture</div>
+      </div>
+      <div class="action-rule" style="margin:12px 0 16px;"></div>
+
+      <div style="display:flex;align-items:stretch;gap:6px;">
+        <!-- sources -->
+        <div style="display:flex;flex-direction:column;gap:12px;width:152px;flex:none;">
+          <div class="ad-card" style="flex:1;align-items:center;text-align:center;">
+            <div class="ad-sect">Batch Data</div>
+            <div class="ad-srcico" style="width:auto;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg></div>
+            <div class="ad-cap">Unstructured, semi-structured, and structured data</div>
+          </div>
+          <div class="ad-card" style="flex:1;align-items:center;text-align:center;">
+            <div class="ad-sect">Streaming Data</div>
+            <div class="ad-srcico" style="width:auto;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M4 12h13M4 17h8"/><path d="M18 5l3 2-3 2M15 15l3 2-3 2"/></svg></div>
+            <div class="ad-cap">Directly connect to real-time or CDC data</div>
+          </div>
+        </div>
+        <div class="ad-chev">&rsaquo;</div>
+        <!-- ingestion -->
+        <div class="ad-card" style="width:130px;flex:none;gap:9px;">
+          <div class="ad-sect">Ingestion</div>
+          <div class="ad-navybar">INGEST</div>
+          <div class="ad-graybtn">COPY INTO</div>
+          <div class="ad-graybtn">AUTO LOADER</div>
+          <div class="ad-graybtn">STRUCTURED STREAMING</div>
+        </div>
+        <div class="ad-chev">&rsaquo;</div>
+        <!-- center: ML + DE -->
+        <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
+          <div class="ad-card" style="flex:1;">
+            <div class="ad-sect">Machine Learning</div>
+            <div style="display:flex;align-items:stretch;gap:8px;">
+              <div style="flex:1;display:flex;flex-direction:column;gap:6px;"><div class="ad-mlchip"><span class="ml"><img src="../assets/brand/mlflow-logo-black-rgb.svg"></span><span class="lb">DEVELOP</span></div><div class="ad-cap">Python, R &amp; Spark ML development</div></div>
+              <div class="ad-chev" style="font-size:20px;">&rsaquo;</div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:6px;"><div class="ad-mlchip"><span class="ml"><img src="../assets/brand/mlflow-logo-black-rgb.svg"></span><span class="lb">MANAGE</span></div><div class="ad-cap">Version &amp; manage features &amp; models</div></div>
+              <div class="ad-chev" style="font-size:20px;">&rsaquo;</div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:6px;"><div class="ad-mlchip"><span class="ml"><img src="../assets/brand/mlflow-logo-black-rgb.svg"></span><span class="lb">DEPLOY</span></div><div class="ad-cap">Batch &amp; real-time ML deployment</div></div>
+            </div>
+          </div>
+          <div class="ad-card" style="flex:1;">
+            <div class="ad-sect">Data Engineering</div>
+            <div style="display:flex;align-items:stretch;gap:7px;">
+              <div class="ad-stage bz"><div class="sh"><svg viewBox="0 0 24 24" width="12" height="12"><path d="M12 4 L21 20 H3 Z" fill="#fff" opacity=".92"/></svg>BRONZE</div><div class="sb">Raw Ingestion</div></div>
+              <div class="ad-chev" style="font-size:18px;">&rsaquo;</div>
+              <div class="ad-stage sv"><div class="sh"><svg viewBox="0 0 24 24" width="12" height="12"><path d="M12 4 L21 20 H3 Z" fill="#fff" opacity=".92"/></svg>SILVER</div><div class="sb">Filtered, cleaned, augmented</div></div>
+              <div class="ad-chev" style="font-size:18px;">&rsaquo;</div>
+              <div class="ad-stage gd"><div class="sh"><svg viewBox="0 0 24 24" width="12" height="12"><path d="M12 4 L21 20 H3 Z" fill="#fff" opacity=".92"/></svg>GOLD</div><div class="sb">Business-level aggregations</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ad-chev">&rsaquo;</div>
+        <!-- data warehousing -->
+        <div class="ad-card" style="width:120px;flex:none;justify-content:center;align-items:center;text-align:center;">
+          <div class="ad-sect">Data Warehousing</div>
+          <div class="ad-slatebtn" style="width:100%;background:#4A6470;">DATABRICKS SQL</div>
+        </div>
+        <div class="ad-chev">&rsaquo;</div>
+        <!-- consumers -->
+        <div style="display:flex;flex-direction:column;gap:10px;width:124px;flex:none;">
+          <div class="ad-card" style="flex:1;align-items:center;text-align:center;gap:4px;"><div class="ad-sect">Data Apps</div><div class="ad-cap">Embed AI in your apps</div></div>
+          <div class="ad-card" style="flex:1;align-items:center;text-align:center;gap:7px;"><div class="ad-sect">Business Intelligence</div><div style="display:flex;flex-direction:column;gap:5px;align-items:center;"><img src="../assets/brand/arch/power-bi.png" style="height:18px;"><span style="font-size:11px;color:var(--db-ink-muted);font-weight:600;">+ Tableau</span></div></div>
+          <div class="ad-card" style="flex:1;align-items:center;text-align:center;gap:4px;"><div class="ad-sect">Consumers</div><div style="display:flex;gap:8px;"><img src="../assets/brand/arch/azure-sql.png" style="height:22px;"><img src="../assets/brand/arch/azure.png" style="height:22px;"></div><div class="ad-cap">Power downstream data consumers</div></div>
+        </div>
+      </div>
+
+      <!-- platform strip -->
+      <div class="ad-card" style="margin-top:13px;padding:11px 16px;">
+        <div class="ad-sect" style="margin-bottom:9px;">Lakehouse Platform</div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">
+          <div style="display:flex;flex-direction:column;gap:6px;"><div class="ad-navybar" style="font-size:11px;">GOVERNANCE</div><div class="ad-slatebtn">UNITY CATALOG</div></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div class="ad-navybar" style="font-size:11px;">ORCHESTRATION</div><div class="ad-slatebtn">WORKFLOWS</div></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div class="ad-navybar" style="font-size:11px;">CI/CD</div><div class="ad-slatebtn">REPOS</div></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div class="ad-navybar" style="font-size:11px;">OBSERVABILITY</div><div class="ad-slatebtn">LAKEFLOW PIPELINES</div></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div class="ad-navybar" style="font-size:11px;">MULTI-CLOUD</div><div class="ad-graybtn" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:5px;"><img src="../assets/brand/arch/azure.png" style="height:18px;">Azure</div></div>
+        </div>
+      </div>
+    </div></section>
+</body></html>
