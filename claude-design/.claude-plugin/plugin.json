@@ -1,0 +1,12 @@
+{
+  "name": "claude-design",
+  "version": "1.0.0",
+  "description": "Generate well-branded Databricks presentations in HTML, PDF, or Google Slides. Bundles design guidelines, brand assets, colors, type, fonts, brand icons, sample slides, and templates.",
+  "author": {
+    "name": "Marcus Tay",
+    "email": "marcus.tay+data@databricks.com"
+  },
+  "homepage": "https://github.com/marcus-tay-dbx/SKILLS/tree/main/claude-design",
+  "repository": "https://github.com/marcus-tay-dbx/SKILLS",
+  "keywords": ["databricks", "design", "branding", "presentations", "slides", "google-slides"]
+}

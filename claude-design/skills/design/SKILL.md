@@ -1,5 +1,5 @@
 ---
-name: claude-design
+name: design
 description: Generate well-branded Databricks presentations in HTML, PDF, or Google Slides. Contains design guidelines, brand assets, colors, type, fonts, brand icons, sample slides, and templates. Always invoke before any visual output task.
 user-invocable: true
 ---

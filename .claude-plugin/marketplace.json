@@ -1,0 +1,17 @@
+{
+  "name": "marcus-tay-skills",
+  "owner": {
+    "name": "Marcus Tay",
+    "email": "marcus.tay+data@databricks.com"
+  },
+  "metadata": {
+    "description": "Marcus Tay's personal Claude Code plugin marketplace."
+  },
+  "plugins": [
+    {
+      "name": "claude-design",
+      "source": "./claude-design",
+      "description": "Generate well-branded Databricks presentations in HTML, PDF, or Google Slides. Bundles design guidelines, brand assets, colors, type, fonts, brand icons, sample slides, and templates."
+    }
+  ]
+}
